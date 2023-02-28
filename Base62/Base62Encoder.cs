@@ -22,9 +22,8 @@ namespace Base62
             while (number > 0)
             {
                 //now we divide by 62 and record the remainder
-                BigInteger remainder = number % bits;
+				number = BigInteger.DivRem(number,bits, out BigInteger remainder);
                 sb.Append(charSet[(int)remainder]);
-                number /= bits;
             }
 
             char[] base62 = sb.ToString().ToCharArray();
