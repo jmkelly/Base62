@@ -1,4 +1,6 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System;
+using System.Buffers.Text;
+using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 namespace Base62.Benchmarks
@@ -16,17 +18,26 @@ namespace Base62.Benchmarks
 
         public Base62Encoder Encoder { get; }
 
+
+
+        [Benchmark(Baseline = true)]
+        public string DotNetSystemTextBufferBase64EncodToUt8InPlace()
+        {
+            Span<byte> span = buffer.AsSpan();
+            _ = Base64.EncodeToUtf8InPlace(span, span.Length, out _);
+			return span.ToString();
+        }
+
+        [Benchmark()]
+        public string DotNetSystemConvertToBase64()
+        {
+            return Convert.ToBase64String(buffer);
+        }
+
         [Benchmark]
         public string Base62Encoder()
         {
             return Encoder.Encode(buffer);
-        }
-
-
-        [Benchmark(Baseline = true)]
-        public string DotNetBase64()
-        {
-            return Convert.ToBase64String(buffer);
         }
     }
 
