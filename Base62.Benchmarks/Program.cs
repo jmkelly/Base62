@@ -3,25 +3,30 @@ using BenchmarkDotNet.Running;
 
 namespace Base62.Benchmarks
 {
+	[MemoryDiagnoser]
     public class EncoderBenchmark
     {
-        private const int N = 10000;
-        private readonly byte[] data;
+		private readonly byte[] buffer = new byte[64];
 
 
         public EncoderBenchmark()
         {
-            data = new byte[N];
-            new Random(42).NextBytes(data);
             Encoder = new Base62Encoder();
         }
 
         public Base62Encoder Encoder { get; }
 
         [Benchmark]
-        public string Encode()
+        public string Base62Encoder()
         {
-            return Encoder.Encode(data);
+            return Encoder.Encode(buffer);
+        }
+
+
+        [Benchmark(Baseline = true)]
+        public string DotNetBase64()
+        {
+            return Convert.ToBase64String(buffer);
         }
     }
 
