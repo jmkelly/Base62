@@ -31,6 +31,24 @@ namespace Base62
             return new string(base62);
         }
 
+        public string Decode(string base62)
+        {
+            char[] chars = base62.ToCharArray();
+			BigInteger number = 0;
+			for (int i = 0; i < chars.Length; i++)
+			{
+				//conver each char to its charset number to get the remainder, then add
+				//onto the product of the number and the bits
+				number = (number * bits) + Array.IndexOf(charSet, chars[i]);
+			}
+            //convert number to bytes
+            byte[] bytes = number.ToByteArray(isUnsigned: true, isBigEndian: true);
+			//convert bytes to UTF8 encoded string
+			return Encoding.UTF8.GetString(bytes);
+
+		}
+
+
         public string Encode(string value)
         {
             //get the binary in utf8
