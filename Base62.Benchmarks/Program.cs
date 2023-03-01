@@ -1,22 +1,23 @@
-﻿using System;
-using System.Buffers.Text;
+﻿using System.Buffers.Text;
+using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 namespace Base62.Benchmarks
 {
-	[MemoryDiagnoser]
+    [MemoryDiagnoser]
     public class EncoderBenchmark
     {
 		private readonly byte[] buffer = new byte[64];
+		private readonly string text = Encoding.UTF8.GetString(new byte[64]);
 
 
         public EncoderBenchmark()
         {
-            Encoder = new Base62Encoder();
+            Base62 = new Base62();
         }
 
-        public Base62Encoder Encoder { get; }
+        public Base62 Base62 { get; }
 
 
 
@@ -34,11 +35,23 @@ namespace Base62.Benchmarks
             return Convert.ToBase64String(buffer);
         }
 
+        //[Benchmark()]
+        //public byte[] DotNetSystemConvertFromBase64()
+        //{
+        //    return Convert.FromBase64String(text);
+        //}
+
         [Benchmark]
         public string Base62Encoder()
         {
-            return Encoder.Encode(buffer);
+            return Base62.Encode(buffer);
         }
+
+        //[Benchmark]
+        //public string Base62Decoder()
+        //{
+        //    return Base62.Decode(text);
+        //}
     }
 
     public class Program

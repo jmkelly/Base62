@@ -29,9 +29,9 @@ namespace Base62.Tests
 
         public void EncoderTest(string input, string encoded)
         {
-            Base62Encoder encoder = new();
-			encoder.Encode(input).ShouldBe(encoded);
-			encoder.Decode(encoded).ShouldBe(input);
+            Base62 base62 = new();
+			base62.Encode(input).ShouldBe(encoded);
+			base62.Decode(encoded).ShouldBe(input);
         }
     }
 }
