@@ -18,11 +18,11 @@ namespace Base62
             {
                 //now we divide by 62 and record the remainder
                 number = BigInteger.DivRem(number, bits, out BigInteger remainder);
+                //insert at the start of the string
                 sb.Insert(0,charSet[(int)remainder]);
             }
 
-            char[] base62 = sb.ToString().ToCharArray();
-            return new string(base62);
+            return sb.ToString();
         }
 
         public string Decode(string base62)
